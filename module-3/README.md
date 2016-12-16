@@ -13,11 +13,11 @@ By the end of this module you will know:
 
 ## Introduction
 
-In this section, we'll transition to the back-end of the Chirp! application. To start the beginnings of the back-end we'll need to create a new express application, add new routes to service our angular.js application and add authentication to protect some of our apis.
+In this section, we'll transition to the back-end of the Chirp! application. To start the beginnings of the back-end we'll need to create a new express application, add new routes to service our angular.js application and add authentication to protect some of our APIs.
 
 ## Node.js
 
-Node.js or simply Node is an asynchronous I/O engine which allows you to write fast, scalable applications on the server using javascript. Its implemented on top of [Chromium's V8 Javascript](http://code.google.com/p/v8) runtime.
+Node.js or simply Node is an asynchronous I/O engine which allows you to write fast, scalable applications on the server using javascript. It's implemented on top of [Chromium's V8 Javascript](http://code.google.com/p/v8) runtime.
 
 Node is single threaded and uses what is called an Event Loop to manage asynchronous tasks. We won't cover that aspect in detail in this module.
 
@@ -34,6 +34,8 @@ We will Start developing in the [Start](./Start) directory and after this module
 The first thing we need to do is generate an express application using Node.js. To do this we'll execute the following commands from this directory:
 
 ```bash
+# install express-generator globally
+npm install express-generator -g
 # create a new express application
 mkdir ./Start
 cd ./Start
@@ -83,8 +85,8 @@ cd ./routes
 rm users.js
 # remove index.js
 rm index.js
-# create authentication.js and api.js files
-touch authentication.js
+# create authenticate.js and api.js files
+touch authenticate.js
 touch api.js
 ```
 
@@ -153,7 +155,7 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 ```
 
-This is the boiler plate code required to run our express application. The [require]() statements allow us to import javascript code. We'll use these to import our API routing code and register them with Express. Let's remove the current require statements to **index.js** and **users.js**:
+This is the boiler plate code required to run our express application. The `require` statements allow us to import javascript code. We'll use these to import our API routing code and register them with Express. Let's remove the current require statements to **index.js** and **users.js**:
 
 ```js
 var routes = require('./routes/index');
@@ -189,7 +191,7 @@ Now we're setup to load **authenticate.js** and **api.js** as application router
 RESTful APIs follow a convention which present *resources* to the client. In our case a **Post** is a resource and because of this we will implement a **/posts** API which will 
 First we'll implement placeholder route handlers for the **/posts** api within **api.js**.
 
-Every router begins with a require to express, and using the express Router class. At the end of the router implementation we **export** this module as the Router to be consumed by the code we added in **app.js**
+Every router begins with a `require` to express, and using the express Router class. At the end of the router implementation we **export** this module as the Router to be consumed by the code we added in **app.js**
 
 ```
 var express = require('express');
@@ -208,90 +210,74 @@ Now between these two things we need to add the **/posts** api handlers. The way
 var express = require('express');
 var router = express.Router();
 
-//api for all posts
+// api for all posts
 router.route('/posts')
-	
-	//create a new post
-	.post(function(req, res){
 
-		//TODO create a new post in the database
-		req.send({message:"TODO create a new post in the database"});
-	})
+    // return all posts
+    .get(function (req, res) {
 
-	.get(function(req, res){
+        // temporary solution
+        res.send({ message: "TODO return all posts" });
+    })
 
-		//TODO get all the posts in the database
-		req.send({message:"TODO get all the posts in the database"});
-	})
-	
+    // create a new post
+    .post(function (req, res) {
 
+        // temporary solution
+        res.send({ message: "TODO Create a new post" });
+    });
 
 module.exports = router;
 ```
 
-Now that we got our **/posts** api completed we need to create some apis for individual posts. We can do this by building off of our **/posts** path and adding an ID specific route  for an individual post. We use the ':' notation in our route name which tells Express that that particular part of the route will be treated as a parameter:
-
-```js
-//api for all posts
-router.route('/posts')
-	
-	//create a new post
-	.post(function(req, res){
-
-		//TODO create a new post in the database
-		res.send({message:"TODO create a new post in the database"});
-	})
-
-	.get(function(req, res){
-
-		//TODO get all the posts in the database
-		res.send({message:"TODO get all the posts in the database"});
-	})
-
-```
-
-Finally our full router implementation looks like this:
+Now that we got our **/posts** api completed we need to create some APIs for individual posts. We can do this by building off of our **/posts** path and adding an ID specific route  for an individual post. We use the ':' notation in our route name which tells Express that that particular part of the route will be treated as a parameter:
 
 ```js
 var express = require('express');
 var router = express.Router();
 
-//api for all posts
+// api for all posts
 router.route('/posts')
-	
-	//create a new post
-	.post(function(req, res){
 
-		//TODO create a new post in the database
-		res.send({message:"TODO create a new post in the database"});
-	})
+    // return all posts
+    .get(function (req, res) {
 
-	.get(function(req, res){
+        // temporary solution
+        res.send({ message: "TODO return all posts" });
+    })
 
-		//TODO get all the posts in the database
-		res.send({message:"TODO get all the posts in the database"});
-	})
+    // create a new post
+    .post(function (req, res) {
 
-//api for a specfic post
+        // temporary solution
+        res.send({ message: "TODO Create a new post" });
+    });
+
+// api for a specfic post
 router.route('/posts/:id')
-	
-	//create
-	.put(function(req,res){
-		return res.send({message:'TODO modify an existing post by using param ' + req.param.id});
-	})
 
-	.get(function(req,res){
-		return res.send({message:'TODO get an existing post by using param ' + req.param.id});
-	})
+    // return a particular post
+    .get(function (req, res) {
 
-	.delete(function(req,res){
-		return res.send({message:'TODO delete an existing post by using param ' + req.param.id})
-	});
+        res.send({ message: 'TODO return a post with ID ' + req.params.id });
+    })
+
+    // update existing post
+    .put(function (req, res) {
+
+        res.send({ message: 'TODO modify a post with ID ' + req.params.id });
+    })
+
+    // delete existing post
+    .delete(function (req, res) {
+
+        res.send({ message: 'TODO delete a post with ID ' + req.params.id });
+    });
 
 module.exports = router;
 ```
 
-To start the application, got to the **./Start** folder and execute:
+To start the application, go to the **./Start** folder and execute:
 
 ```bash
 # starts the application via npm
@@ -300,19 +286,19 @@ npm start
 
 ## Testing Your APIs
 
-To test your API's we'll use [Advanced Rest Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo) a Chrome browser application that allows us to test our API's without having to write code. You can also use [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) another great application to do the same.
+To test your APIs we'll use [Advanced Rest Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo) a Chrome browser application that allows us to test our API's without having to write code. You can also use [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) another great application to do the same.
 
-Open Chrome and either install or open Advanced Rest Client. We will make a request to each API we implemented ensure we get the correct place-holder message:
+Open Chrome and either install or open Advanced Rest Client. We will make a request to each API we implemented to ensure we get the correct place-holder message:
 
 ![](ScreenShots/ss1.png)
 
 ![](ScreenShots/ss2.png)
 
-Note that because in app.js we assigned express to use the **api** router at **/api** all routes in this file will have the prefix ''**/api**'
+Note that because in **app.js** we assigned express to use the **api** router at **/api** all routes in this file will have the prefix '**/api**'.
 
 Ensure that you get the correct 'TODO' message for the remaining **/api/posts**.
 
-To test the **/api/posts/:id** routes you can simply use any string for the :id part of the path. When we implement the API with MongoDB, we'll use the generated ID's from MongoDB.
+To test the **/api/posts/:id** routes you can simply use any string for the :id part of the path. When we implement the API with MongoDB, we'll use the generated IDs from MongoDB.
 
 # Adding the Authentication APIs
 
@@ -321,9 +307,9 @@ Most applications require some type of authentication to provide some basic iden
 
 ## Installing the Modules
 
-Passport is the library we will use to handle storing users within HTTP sessions. Express-session is middleware for handling sessions and bcrypt will allow us to store our passwords as hashes as its never a good idea to store passwords. First we have to install a few modules. Navigate to the [./Start](./Start) folder and execute:
+Passport is the library we will use to handle storing users within HTTP sessions. Express-session is middleware for handling sessions and bcrypt will allow us to store our passwords as hashes as it's never a good idea to store passwords. First we have to install a few modules. Navigate to the [./Start](./Start) folder and execute:
 
-```js
+```bash
 # install express session middleware
 npm install express-session --save
 # install passport
@@ -342,7 +328,7 @@ You can think of these things as 'middlemen' standing between your client and yo
 
 ### Session Middleware
 
-We will use the **express-generator** middleware at the application level to handle maintaining sessions. To do this go to **app.js** and add the following require statement at the top:
+We will use the **express-session** middleware at the application level to handle maintaining sessions. To do this go to **app.js** and add the following require statement at the top:
 
 ```js
 var session = require('express-session');
@@ -356,7 +342,7 @@ Now change your middleware section to use the session module:
 app.use(logger('dev'));
 //Add this portion to your middleware section
 app.use(session({
-  secret: 'keyboard cat'
+  secret: 'super duper secret'
 }));
 //
 app.use(bodyParser.json());
@@ -402,7 +388,7 @@ In order to properly initialize passport we need to initialize it with its own m
 
 Add a new javascript file within the [./Start](./Start) directory
 
-```
+```bash
 #create passport-init.js file
 touch passport-init.js
 ```
@@ -460,58 +446,32 @@ module.exports = function(passport){
 
 The code above registers LocalStrategy instances for the signup and login actions in passport. These functions will be responsible for providing passport the user objects from our data storage. Obviously the code above is not complete.
 
-We also have two utility functions **createHash** **isValidPassword** for hashing and checking passwords.
+We also have two utility functions: **createHash** & **isValidPassword** for hashing and checking passwords.
 
-At top near your require statements in **passport-init.js** add a declaration for the **users** js object:
-
-```
-var LocalStrategy   = require('passport-local').Strategy;
-var bCrypt = require('bcrypt-nodejs');
-//temporary data store
-var users = {};
-```
-
-Let's implement the **signup** action first:
+Let's implement the **signup** action first. The **signup** handler is pretty self explanatory. All we need to do is check if the username is on the user object we created otherwise we store the username and password as a key entry in the users object:
 
 ```js
 passport.use('signup', new LocalStrategy({
-			passReqToCallback : true // allows us to pass back the entire request to the callback
-		},
-		function(req, username, password, done) {
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+        function (req, username, password, done) {
 
-			findOrCreateUser = function(){
+            // check if user already exists
+            if (users[username]) {
+				console.log('username: ' + username + ' already taken');
+                return done('username already taken', false);
+            }
 
-				return done('we have not implemented this', false);
-			};
+            // add user to db
+            users[username] = {
+                username: username,
+                password: createHash(password)
+            };
 
-			return findOrCreateUser();
-		})
-	);
-```
-
-The **signup** handler is pretty self explanatory. All we need to do is check if the username is on the user object we created otherwise we store the username and password as a key entry in the users object:
-
-```js
-passport.use('signup', new LocalStrategy({
-			passReqToCallback : true // allows us to pass back the entire request to the callback
-		},
-		function(req, username, password, done) {
-
-			if (users[username]){
-				console.log('User already exists with username: ' + username);
-				return done(null, false);
-			}
-	
-			//store user in memory 
-			users[username] = {
-				username: username,
-				password: createHash(password)
-			}
-			
-			console.log(users[username].username + ' Registration successful');
-			return done(null, users[username]);
-		})
-);
+            console.log(users[username].username + ' Registration successful');
+            return done(null, users[username]);
+        })
+    );
 ```
 
 To conform to passports specifications, we must call the **done** callback function on every exit point of the function.
@@ -520,118 +480,112 @@ The **login** handler is also quite simple. Just check if the user is in the dat
 
 ```js
 passport.use('login', new LocalStrategy({
-			passReqToCallback : true
-		},
-		function(req, username, password, done) { 
+        passReqToCallback: true
+    },
+        function (req, username, password, done) {
 
-			if(users[username]){
-				console.log('User Not Found with username '+username);
-				return done(null, false);
-			}
+            if (!users[username]) {
+                console.log('User Not Found with username ' + username);
+                return done('user not found', false);
+            }
 
-			if(isValidPassword(users[username], password)){
-				//sucessfully authenticated
-				return done(null, users[username]);
-			}
-			else{
-				console.log('Invalid password '+username);
-				return done(null, false)
-			}
-		}
-));
+            if (!isValidPassword(users[username], password)) {
+                console.log('Invalid username/password');
+                return done('Invalid username/password', false);
+            }
+
+            console.log('sucessfully signed in');
+            return done(null, users[username]);
+        }
+    ));
 ```
 
 Finally the serialize and deserialize handlers need to be provided a unique ID for each user. We can just use the username because those will be unique:
 
 ```js
 // Passport needs to be able to serialize and deserialize users to support persistent login sessions
-passport.serializeUser(function(user, done) {
-	console.log('serializing user:',user.username);
-	//return the unique id for the user
-	done(null, user.username);
+passport.serializeUser(function (user, done) {
+	console.log('serializing user:', user.username);
+	return done(null, user.username);
 });
 
 //Desieralize user will call with the unique id provided by serializeuser
-passport.deserializeUser(function(username, done) {
-
+passport.deserializeUser(function (username, done) {
+	console.log('deserializing user:', username);
 	return done(null, users[username]);
-
 });
 ```
-Putting it all together our **passport-init.js** looks like:
+Putting it all together, our **passport-init.js** looks like:
 
 ```js
-var User = require('./models/models');
-var mongoose = require('mongoose');   
-var User = mongoose.model('User');
-var LocalStrategy   = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
-users = {};
-module.exports = function(passport){
+//temporary data store
+var users = {};
+module.exports = function (passport) {
 
-	// Passport needs to be able to serialize and deserialize users to support persistent login sessions
-	passport.serializeUser(function(user, done) {
-		console.log('serializing user:',user.username);
-		//return the unique id for the user
-		done(null, user.username);
-	});
+    // Passport needs to be able to serialize and deserialize users to support persistent login sessions
+    passport.serializeUser(function (user, done) {
+        console.log('serializing user:', user.username);
+        return done(null, user.username);
+    });
 
-	//Desieralize user will call with the unique id provided by serializeuser
-	passport.deserializeUser(function(username, done) {
+    //Desieralize user will call with the unique id provided by serializeuser
+    passport.deserializeUser(function (username, done) {
+        console.log('deserializing user:', username);
+        return done(null, users[username]);
+    });
 
-		return done(null, users[username]);
+    passport.use('login', new LocalStrategy({
+        passReqToCallback: true
+    },
+        function (req, username, password, done) {
 
-	});
+            if (!users[username]) {
+                console.log('User Not Found with username ' + username);
+                return done('user not found', false);
+            }
 
-	passport.use('login', new LocalStrategy({
-			passReqToCallback : true
-		},
-		function(req, username, password, done) { 
+            if (!isValidPassword(users[username], password)) {
+                console.log('Invalid username/password');
+                return done('Invalid username/password', false);
+            }
 
-			if(users[username]){
-				console.log('User Not Found with username '+username);
-				return done(null, false);
-			}
+            console.log('sucessfully signed in');
+            return done(null, users[username]);
+        }
+    ));
 
-			if(isValidPassword(users[username], password)){
-				//sucessfully authenticated
-				return done(null, users[username]);
-			}
-			else{
-				console.log('Invalid password '+username);
-				return done(null, false)
-			}
-		}
-	));
+    passport.use('signup', new LocalStrategy({
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+        function (req, username, password, done) {
 
-	passport.use('signup', new LocalStrategy({
-			passReqToCallback : true // allows us to pass back the entire request to the callback
-		},
-		function(req, username, password, done) {
+            // check if user already exists
+            if (users[username]) {
+                return done('username already taken', false);
+            }
 
-			if (users[username]){
-				console.log('User already exists with username: ' + username);
-				return done(null, false);
-			}
+            // add user to db
+            users[username] = {
+                username: username,
+                password: createHash(password)
+            };
 
-			users[username] = {
-				username: username,
-				password: createHash(password)
-			}
-			
-			console.log(users[username].username + ' Registration successful');
-			return done(null, users[username]);
-		})
-	);
-	
-	var isValidPassword = function(user, password){
-		return bCrypt.compareSync(password, user.password);
-	};
-	// Generates hash using bCrypt
-	var createHash = function(password){
-		return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-	};
+            console.log(users[username].username + ' Registration successful');
+            return done(null, users[username]);
+        })
+    );
 
+    var isValidPassword = function (user, password) {
+        return bCrypt.compareSync(password, user.password);
+    };
+    // Generates hash using bCrypt
+    var createHash = function (password) {
+        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+    };
+
+};
 ```
 
 Finally we have to initialize passport with the authentication strategies we've defined in **passport-init.js**. Add this segment of code after the middleware section in app.js:
@@ -656,7 +610,7 @@ First, let's uncomment the require to **authenticate.js** require within **app.j
 var authenticate = require('./routes/authenticate')(passport);
 ```
 
-**Authenticate.js** will be written as a router, similar to **api.js** except it will expose a function that will take the **passport** module and return the router:
+**authenticate.js** will be written as a router, similar to **api.js** except it will expose a function that will take the **passport** module and return the router:
 
 ```js
 var express = require('express');
@@ -693,7 +647,6 @@ module.exports = function(passport){
 	});
 
 	return router;
-
 }
 ```
 
@@ -703,7 +656,7 @@ Notice the **req.logout** function within the **/signout** route handler. This i
 
 ### Protecting APIs with Authentication using Middleware
 
-Now that we've added our authentication APIs we can actually create our own middle ware to protect some of our APIs.
+Now that we've added our authentication APIs we can actually create our own middleware to protect some of our APIs.
 
 For Chirp! we want to allow anyone to read posts, but modifying and creating new posts is exclusively for registered users.
 
@@ -759,6 +712,6 @@ Now, if we signup and login we should be able to call the POST method on the **/
 
 # Conclusion
 
-We've created all the necessary routes in express to service our angular application. In this section we've covered how to get started using node, generating an express application, creating routes, using passport for authentication and using middleware to protect our apis.
+We've created all the necessary routes in express to service our angular application. In this section we've covered how to get started using node, generating an express application, creating routes, using passport for authentication and using middleware to protect our APIs.
 
 In the next section we'll fully implement the API route handlers using MongoDB to store Post and User documents for persistent storage.
