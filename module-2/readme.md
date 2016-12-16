@@ -5,7 +5,7 @@
 
 ####Creating an Angular module and controller
 
-First things first, we'll need to create an Angular app that's going to control the all the functionality for the our application's front end. Let's call that `chirpApp.js`. We can then integrate it into our `main.html`, `login.html`, and `signup.html` views.
+First things first, we'll need to create an Angular app that's going to control all the functionality for our application's front end. Let's call that `chirpApp.js`. We can then integrate it into our `main.html`, `login.html`, and `signup.html` views.
 
 In here, we'll create a `module` named `chirpApp` to contain all the logic for this Angular app. We'll also add in a `controller` named `mainController` that takes care of our core functionality, such as creating and displaying posts. We're going to leave these empty for now.
 
@@ -23,16 +23,19 @@ We can use this in our primary template, `main.html`. This should contain a form
 ```html
 <!--main.html-->
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
   </head>
   <body>
     <div id='main'>
       <form>
-        <input type="text" placeholder="Your name" /> 
+        <input type="text" placeholder="Your name">
         <textarea required maxlength="200" rows="3" placeholder="Say something"></textarea>
-        <input class="button" type="submit" value="Chirp!" />
+        <input class="button" type="submit" value="Chirp!">
       </form>
       <div id="post-stream">
         <h4>Chirp Feed</h4>
@@ -51,10 +54,13 @@ First things first, we'll need to include the Angular files. The easiest and qui
 ```html
 <!--main.html-->
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
   </head>
   <body ng-app="chirpApp">
@@ -97,7 +103,7 @@ app.controller('mainController', function($scope){
 
 Now, let's start integrating and calling these from our `main.html`. We can use the `ng-model` directive to bind the properties of `newPost` to our chirp posting form. 
 
-We can even start displaying the chirp feed now. The `ng-repeat` directive is perfect for this. When we use it with the syntax `ng-repeat = post in posts` on our, Angular will access the `posts` variable and loop through and set each to `post`. Then we can access the details of each `post` and display them. 
+We can even start displaying the chirp feed now. The `ng-repeat` directive is perfect for this. When we use it with the syntax `ng-repeat = post in posts`, Angular will access the `posts` variable and loop through and set each to `post`. Then we can access the details of each `post` and display them. 
 
 `post.created_by` and `post.text` are straightforward enough to display with just `{{post.created_by}}` and `{{post.text}}` since they're just text, but what about `posts.created_at`? It's just an unformatted timestamp right now, but we can format it with a filter. This can be done right in the template binding, by just specifying the format you'd like. In this case, we'll use `{{post.created_at| date:"h:mma 'on' MMM d, y"}}`
 
@@ -105,18 +111,22 @@ We also use a simple `orderBy` filter on our `ng-repeat` to determine the order 
 
 ```html
 <!--main.html-->
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
   </head>
   <body ng-app="chirpApp">
     <div id='main' ng-controller="mainController">
       <form ng-Submit="post()">
-        <input required type="text" placeholder="Your name" ng-model="newPost.created_by" /> 
+        <input required type="text" placeholder="Your name" ng-model="newPost.created_by"> 
         <textarea required maxlength="200" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
-        <input class="button" type="submit" value="Chirp!" />
+        <input class="button" type="submit" value="Chirp!">
       </form>
       <div id="post-stream">
         <h4>Chirp Feed</h4>
@@ -136,12 +146,16 @@ Okay, this is starting to work! Our page is looking pretty rough though, and we 
 
 ```html
 <!--main.html-->
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body ng-app="chirpApp">
@@ -149,9 +163,9 @@ Okay, this is starting to work! Our page is looking pretty rough though, and we 
       <div class="col-md-offset-2 col-md-8">
         <div class="clearfix">
           <form ng-Submit="post()">
-            <input required type="text" class="form-control" placeholder="Your name" ng-model="newPost.created_by" /> 
+            <input required type="text" class="form-control" placeholder="Your name" ng-model="newPost.created_by"> 
             <textarea required class="form-control" maxlength="200" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
-            <input class="btn submit-btn pull-right" type="submit" value="Chirp!" />
+            <input class="btn submit-btn pull-right" type="submit" value="Chirp!">
           </form>
           <div id="post-stream">
             <h4>Chirp Feed</h4>
@@ -212,12 +226,16 @@ The only differences between `login.html` and `register.html` should be the form
 
 ```html
 <!--register.html-->
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body ng-app="chirpApp">
@@ -227,7 +245,7 @@ The only differences between `login.html` and `register.html` should be the form
         <p class="text-warning">{{error_message}}</p>
         <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
         <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-        <input type="submit" value="Register" class="btn btn-primary" />
+        <input type="submit" value="Register" class="btn btn-primary">
       </form>
     </div>
   </body>
@@ -236,12 +254,16 @@ The only differences between `login.html` and `register.html` should be the form
 
 ```html
 <!--login.html-->
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body ng-app="chirpApp">
@@ -251,7 +273,7 @@ The only differences between `login.html` and `register.html` should be the form
         <p class="text-warning">{{error_message}}</p>
         <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
         <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-        <input type="submit" value="Log in" class="btn btn-primary" />
+        <input type="submit" value="Log in" class="btn btn-primary">
       </form>
     </div>
   </body>
@@ -270,12 +292,16 @@ The `ng-view` directive is used to indicate where each view partial will be inje
 
 ```html
 <!--index.html-->
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body ng-app="chirpApp">
@@ -295,9 +321,9 @@ We can transform our `main.html`, `login.html`, and `register.html` into simple 
 <!--main.html-->
 <div class="clearfix">
   <form ng-Submit="post()">
-    <input required type="text" class="form-control" placeholder="Your name" ng-model="newPost.created_by" /> 
+    <input required type="text" class="form-control" placeholder="Your name" ng-model="newPost.created_by"> 
     <textarea required class="form-control" maxlength="200" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
-    <input class="btn submit-btn pull-right" type="submit" value="Chirp!" />
+    <input class="btn submit-btn pull-right" type="submit" value="Chirp!">
   </form>
   <div id="post-stream">
     <h4>Chirp Feed</h4>
@@ -317,7 +343,7 @@ We can transform our `main.html`, `login.html`, and `register.html` into simple 
   <p class="text-warning">{{error_message}}</p>
   <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
   <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-  <input type="submit" value="Log in" class="btn btn-primary" />
+  <input type="submit" value="Log in" class="btn btn-primary">
 </form>
 
 ```
@@ -329,7 +355,7 @@ We can transform our `main.html`, `login.html`, and `register.html` into simple 
   <p class="text-warning">{{error_message}}</p>
   <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
   <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-  <input type="submit" value="Register" class="btn btn-primary" />
+  <input type="submit" value="Register" class="btn btn-primary">
 </form>
 ```
 
@@ -339,7 +365,7 @@ Much shorter, right? You might also have noticed that we've taken out any mentio
 
 ```html
 <!--index.html-->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular-route.min.js"></script>
 ```
 
 Application routes in Angular are declared using the `$routeProvider`, which will wire up templates and controllers depending on the browser's location. 
@@ -396,22 +422,26 @@ Since we're can render our partials views in only part of the page, we can put a
 
 ```html
 <!--index.html-->
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chirp</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular-route.min.js"></script>
     <script src="javascripts/chirpApp.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body ng-app="chirpApp">
-    <div id='main' class="container">
+    <div id="main" class="container">
       <nav class="navbar-fluid navbar-default navbar-fixed-top">
         <div class="container">
           <a class="navbar-brand" href="#"> Chirp! </a>
           <p class="navbar-text"> Learn the MEAN stack by building this tiny app</p>
-          <p class="navbar-right navbar-text"><a href="#/login">Login</a> or <a href="#/register">Register</a></p>
+          <p class="navbar-right navbar-text"><a href="#!/login">Login</a> or <a href="#!/register">Register</a></p>
         </div>
       </nav>
       <div class="col-md-offset-2 col-md-8">
@@ -423,5 +453,4 @@ Since we're can render our partials views in only part of the page, we can put a
 </html>
 ```
 
-
-
+In the terminal, change your current directory to *completed* (i.e. `cd completed`), download the dependencies (i.e. `npm insall`) and run the application (i.e. `node app.js`).
