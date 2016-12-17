@@ -1,57 +1,99 @@
+var mongoose = require('mongoose');
+var Post = mongoose.model('Post');
 var express = require('express');
 var router = express.Router();
 
 //Used for routes that must be authenticated.
-function isAuthenticated (req, res, next) {
-	// if user is authenticated in the session, call the next() to call the next request handler 
-	// Passport adds this method to request object. A middleware is allowed to add properties to
-	// request and response objects
+function isAuthenticated(req, res, next) {
+    // if user is authenticated in the session, call the next() to call the next request handler 
+    // Passport adds this method to request object. A middleware is allowed to add properties to
+    // request and response objects
 
-	//allow all get request methods
-	if(req.method === "GET"){
-		return next();
-	}
-	if (req.isAuthenticated()){
-		return next();
-	}
+    //allow all get request methods
+    if (req.method === "GET" || req.isAuthenticated()) {
+        console.log('Authenticated or GET request!');
+        return next();
+    }
 
-	// if the user is not authenticated then redirect him to the login page
-	return res.redirect('/#login');
+    // if the user is not authenticated then redirect him to the login page
+    console.log('Redirecting to login page...');
+    return res.redirect('/#login');
 };
 
 //Register the authentication middleware
 router.use('/posts', isAuthenticated);
 
-//api for all posts
+// api for all posts
 router.route('/posts')
-	
-	//create a new post
-	.post(function(req, res){
 
-		//TODO create a new post in the database
-		res.send({message:"TODO create a new post in the database"});
-	})
+    // return all posts
+    .get(function (req, res) {
+        Post.find(function (err, posts) {
+            if (err) {
+                return res.send(500, err);
+            }
+            return res.send(posts);
+        });
+    })
 
-	.get(function(req, res){
+    // create a new post
+    .post(function (req, res) {
 
-		//TODO get all the posts in the database
-		res.send({message:"TODO get all the posts in the database"});
-	})
+        var post = new Post();
+        post.text = req.body.text;
+        post.created_by = req.body.created_by;
+        post.save(function (err, post) {
+            if (err) {
+                return res.send(500, err);
+            }
+            return res.json(post);
+        });
+    });
 
-//api for a specfic post
+// api for a specfic post
 router.route('/posts/:id')
-	
-	//create
-	.put(function(req,res){
-		return res.send({message:'TODO modify an existing post by using param ' + req.param.id});
-	})
 
-	.get(function(req,res){
-		return res.send({message:'TODO get an existing post by using param ' + req.param.id});
-	})
+    // return a particular post
+    .get(function (req, res) {
+        Post.findById(req.params.id, function (err, post) {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(post);
+        });
+    })
 
-	.delete(function(req,res){
-		return res.send({message:'TODO delete an existing post by using param ' + req.param.id})
-	});
+    //update specified post
+    .put(function (req, res) {
+        Post.findById(req.params.id, function (err, post) {
+            if (err) {
+                console.log('Error:');
+                console.log(err);
+                return res.send(err);
+            }
+
+            post.created_by = req.body.created_by;
+            post.text = req.body.text;
+
+            post.save(function (err, post) {
+                if (err) {
+                    return res.send(err);
+                }
+                return res.json(post);
+            });
+        });
+    })
+
+    //delete the post
+    .delete(function (req, res) {
+        Post.remove({
+            _id: req.params.id
+        }, function (err) {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json("deleted :(");
+        });
+    });
 
 module.exports = router;
