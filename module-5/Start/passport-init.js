@@ -13,17 +13,21 @@ module.exports = function (passport) {
 
     passport.deserializeUser(function (id, done) {
         User.findById(id, function (err, user) {
-            if (err) {
-                return done(err, false);
-            }
-
-            if (!user) {
-                return done('user not found', false);
-            }
             console.log('deserializing user:', user.username);
-            // user, true!
-            done(null, user);
+            done(err, user);
         });
+        // User.findById(id, function (err, user) {
+        //     if (err) {
+        //         return done(err, false);
+        //     }
+
+        //     if (!user) {
+        //         return done('user not found', false);
+        //     }
+        //     console.log('deserializing user:', user.username);
+        //     // user, true!
+        //     done(null, user);
+        // });
     });
 
     passport.use('login', new LocalStrategy({
@@ -36,7 +40,7 @@ module.exports = function (passport) {
                 function (err, user) {
                     // In case of any error, return using the done method
                     if (err) {
-                        return done(err, false);
+                        return done(err);
                     }
                     // Username does not exist, log the error and redirect back
                     if (!user) {
@@ -67,7 +71,7 @@ module.exports = function (passport) {
                 // In case of any error, return using the done method
                 if (err) {
                     console.log('Error in SignUp: ' + err);
-                    return done(err, false);
+                    return done(err);
                 }
                 // already exists
                 if (user) {
@@ -85,7 +89,7 @@ module.exports = function (passport) {
                     newUser.save(function (err, user) {
                         if (err) {
                             console.log('Error in Saving user: ' + err);
-                            return done(err, false);
+                            return done(err);
                         }
                         console.log(newUser.username + ' Registration successful');
                         return done(null, newUser);

@@ -159,12 +159,12 @@ passport.use('login', new LocalStrategy({
 
 		if (!users[username]) {
 			console.log('User Not Found with username ' + username);
-			return done('user not found', false);
+			return done(null, false);
 		}
 
 		if (!isValidPassword(users[username], password)) {
 			console.log('Invalid username/password');
-			return done('Invalid username/password', false);
+			return done(null, false);
 		}
 
 		console.log('sucessfully signed in');
@@ -186,12 +186,12 @@ User.findOne({ 'username': username },
 		// Username does not exist, log the error and redirect back
 		if (!user) {
 			console.log('User Not Found with username ' + username);
-			return done('User Not Found with username ' + username, false);
+			return done(null, false);
 		}
 		// User exists but wrong password, log the error 
 		if (!isValidPassword(user, password)) {
 			console.log('Invalid Password');
-			return done('Invalid Password', false); // redirect back to login page
+			return done(null, false); // redirect back to login page
 		}
 		// User and password both match, return user from done method
 		// which will be treated like success
@@ -219,7 +219,7 @@ passport.use('signup', new LocalStrategy({
 
 		// check if user already exists
 		if (users[username]) {
-			return done('username already taken', false);
+			return done(null, false);
 		}
 
 		// add user to db
@@ -247,7 +247,7 @@ User.findOne({ 'username': username }, function (err, user) {
 	// already exists
 	if (user) {
 		console.log('User already exists with username: ' + username);
-		return done('User already exists with username: ' + username, false);
+		return done(null, false);
 	} else {
 		// if there is no user, create the user
 		var newUser = new User();
@@ -259,9 +259,9 @@ User.findOne({ 'username': username }, function (err, user) {
 		// save the user
 		newUser.save(function (err) {
 			if (err) {
-				console.log('Error in Saving user: ' + err);
-				throw err;
-			}
+                console.log('Error in Saving user: ' + err);
+                return done(err, false);
+            }
 			console.log(newUser.username + ' Registration successful');
 			return done(null, newUser);
 		});
@@ -336,8 +336,16 @@ module.exports = function (passport) {
 
     passport.deserializeUser(function (id, done) {
         User.findById(id, function (err, user) {
+            if (err) {
+                return done(err, false);
+            }
+
+            if (!user) {
+                return done('user not found', false);
+            }
             console.log('deserializing user:', user.username);
-            done(err, user);
+            // user, true!
+            done(null, user);
         });
     });
 
@@ -356,12 +364,12 @@ module.exports = function (passport) {
                     // Username does not exist, log the error and redirect back
                     if (!user) {
                         console.log('User Not Found with username ' + username);
-                        return done('User Not Found with username ' + username, false);
+                        return done(null, false);
                     }
                     // User exists but wrong password, log the error 
                     if (!isValidPassword(user, password)) {
-                        console.log('Invalid Password');
-                        return done('Invalid Password', false); // redirect back to login page
+                        console.log('Incorrect Password');
+                        return done(null, false); // redirect back to login page
                     }
                     // User and password both match, return user from done method
                     // which will be treated like success
@@ -387,7 +395,7 @@ module.exports = function (passport) {
                 // already exists
                 if (user) {
                     console.log('User already exists with username: ' + username);
-                    return done('User already exists with username: ' + username, false);
+                    return done(null, false);
                 } else {
                     // if there is no user, create the user
                     var newUser = new User();
@@ -397,10 +405,10 @@ module.exports = function (passport) {
                     newUser.password = createHash(password);
 
                     // save the user
-                    newUser.save(function (err) {
+                    newUser.save(function (err, user) {
                         if (err) {
                             console.log('Error in Saving user: ' + err);
-                            throw err;
+                            return done(err, false);
                         }
                         console.log(newUser.username + ' Registration successful');
                         return done(null, newUser);

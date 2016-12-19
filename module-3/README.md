@@ -177,7 +177,7 @@ app.use('/', routes);
 app.use('/users', users);
 ```
 
-and replace it with
+and replace it with:
 
 ```js
 //app.use('/auth', authenticate);
@@ -193,7 +193,7 @@ First we'll implement placeholder route handlers for the **/posts** api within *
 
 Every router begins with a `require` to express, and using the express Router class. At the end of the router implementation we **export** this module as the Router to be consumed by the code we added in **app.js**
 
-```
+```js
 var express = require('express');
 var router = express.Router();
 
@@ -418,8 +418,8 @@ module.exports = function(passport){
 			passReqToCallback : true
 		},
 		function(req, username, password, done) { 
-
-			return done('we have not implemented this', false);
+            // In authenticate.js, we don't expect errors and if we pass an error here we will have issues later on in module 5. Just return a call to done with an error of null and truthy/falsy response.
+			return done(null, false);
 		}
 	));
 
@@ -428,7 +428,7 @@ module.exports = function(passport){
 		},
 		function(req, username, password, done) {
 
-			return done('we have not implemented this', false);
+			return done(null, false);
 
 		})
 	);
@@ -459,7 +459,7 @@ passport.use('signup', new LocalStrategy({
             // check if user already exists
             if (users[username]) {
 				console.log('username: ' + username + ' already taken');
-                return done('username already taken', false);
+                return done(null, false);
             }
 
             // add user to db
@@ -486,12 +486,12 @@ passport.use('login', new LocalStrategy({
 
             if (!users[username]) {
                 console.log('User Not Found with username ' + username);
-                return done('user not found', false);
+                return done(null, false);
             }
 
             if (!isValidPassword(users[username], password)) {
                 console.log('Invalid username/password');
-                return done('Invalid username/password', false);
+                return done(null, false);
             }
 
             console.log('sucessfully signed in');
@@ -543,12 +543,12 @@ module.exports = function (passport) {
 
             if (!users[username]) {
                 console.log('User Not Found with username ' + username);
-                return done('user not found', false);
+                return done(null, false);
             }
 
             if (!isValidPassword(users[username], password)) {
                 console.log('Invalid username/password');
-                return done('Invalid username/password', false);
+                return done(null, false);
             }
 
             console.log('sucessfully signed in');
@@ -563,7 +563,7 @@ module.exports = function (passport) {
 
             // check if user already exists
             if (users[username]) {
-                return done('username already taken', false);
+                return done(null, false);
             }
 
             // add user to db
@@ -588,7 +588,7 @@ module.exports = function (passport) {
 };
 ```
 
-Finally we have to initialize passport with the authentication strategies we've defined in **passport-init.js**. Add this segment of code after the middleware section in app.js:
+Finally we have to initialize passport with the authentication strategies we've defined in **passport-init.js**. Add this segment of code after the middleware section in **app.js**:
 
 ```js
 //// Initialize Passport

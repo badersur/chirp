@@ -23,12 +23,12 @@ module.exports = function (passport) {
 
             if (!users[username]) {
                 console.log('User Not Found with username ' + username);
-                return done('user not found', false);
+                return done(null, false);
             }
 
             if (!isValidPassword(users[username], password)) {
                 console.log('Invalid username/password');
-                return done('Invalid username/password', false);
+                return done(null, false);
             }
 
             console.log('sucessfully signed in');
@@ -43,7 +43,7 @@ module.exports = function (passport) {
 
             // check if user already exists
             if (users[username]) {
-                return done('username already taken', false);
+                return done(null, false);
             }
 
             // add user to db
