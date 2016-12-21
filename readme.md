@@ -1,6 +1,13 @@
-Teaching example for the MEAN stack by building out a Twitter clone named Chirp!
+# Chirp
 
-###Building Chirp, a MEAN Twitter Clone###
+A modified version of the supporting repo. for Microsoft Virtual Academy's course: [MEAN  Stack Jump Start](https://mva.microsoft.com/en-US/training-courses/mean-stack-jump-start-8442) which teaches the MEAN stack by building out a Twitter clone named Chirp!
+
+## My work
+
+- Upgrading frameworks, libraries and modules to the latest versions
+- Fixed documentaion (typos & missing instructions)
+
+## Building Chirp, a MEAN Twitter Clone
 
 We're going to use the whole MEAN stack -- Mongo, Express, Angular, and Node -- to build out a simple but robust Twitter clone called Chirp. 
 
