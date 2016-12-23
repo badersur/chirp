@@ -1,10 +1,10 @@
 # Chirp
 
-A modified version of the supporting repo. for Microsoft Virtual Academy's course: [MEAN  Stack Jump Start](https://mva.microsoft.com/en-US/training-courses/mean-stack-jump-start-8442) which teaches the MEAN stack by building out a Twitter clone named Chirp!
+A modified version of the supporting repo. for Microsoft Virtual Academy's course: [MEAN  Stack Jump Start](https://mva.microsoft.com/en-US/training-courses/mean-stack-jump-start-8442) which teaches the MEAN stack by building out a Twitter clone!
 
 ## My work
 
-- Upgrading frameworks, libraries and modules to the latest versions
+- Upgraded frameworks, libraries and modules to the latest versions
 - Fixed documentaion (typos & missing instructions)
 
 ## Building Chirp, a MEAN Twitter Clone
@@ -20,7 +20,7 @@ We're going to show you how to:
 
 and deploy it all on Azure!
 
-### [Getting started with Angular](module-2)
-### [Node and Express](module-3)
-### [MongoDB](module-4)
-### [Tying the app together in Angular](module-5)
+1. [Getting started with Angular](module-2)
+2. [Node and Express](module-3)
+3. [MongoDB](module-4)
+4. [Tying the app together in Angular](module-5)
